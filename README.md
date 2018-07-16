@@ -48,7 +48,7 @@ export class Example extends React.Component {
     super(props);
     this.state = {
       record: false,
-      save: flse
+      save: false
     }
 
   }
