@@ -28,7 +28,9 @@ You can also see this component in action at [voicerecordpro.com](https://www.vo
 
 <ReactMic
   record={boolean}         // defaults -> false.  Set to true to begin recording
+  save={boolean}           // set to true if you want to save
   className={string}       // provide css class name
+  onSave={function}        // callback to save your recording
   onStop={function}        // callback to execute when audio stops recording
   strokeColor={string}     // sound wave color
   backgroundColor={string} // background color
@@ -45,7 +47,8 @@ export class Example extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      record: false
+      record: false,
+      save: flse
     }
 
   }
@@ -58,20 +61,30 @@ export class Example extends React.Component {
 
   stopRecording = () => {
     this.setState({
-      record: false
+      record: false,
+      save: false
     });
   }
 
-  onStop(recordedBlob) {
+  onSave(recordedBlob) {
+    this.setState({
+      save: false
+    })
+  }
+
+  onStop() {
     console.log('recordedBlob is: ', recordedBlob);
   }
 
   render() {
+    const { record, save } = this.state
     return (
       <div>
         <ReactMic
-          record={this.state.record}
+          record={record}
+          save={save}
           className="sound-wave"
+          onSave={this.onSave}
           onStop={this.onStop}
           strokeColor="#000000"
           backgroundColor="#FF4081" />
@@ -116,6 +129,3 @@ module.exports = {
 ## License
 
 MIT
-
-
-
