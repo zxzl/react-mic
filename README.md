@@ -61,15 +61,21 @@ export class Example extends React.Component {
 
   stopRecording = () => {
     this.setState({
-      record: false,
-      save: false
+      record: false
+    });
+  }
+
+  saveRecording = () => {
+    this.setState({
+      save: true
     });
   }
 
   onSave(recordedBlob) {
     this.setState({
-      save: false
-    })
+      save: false,
+      recordedBlob: recordedBlob
+    });
   }
 
   onStop() {
@@ -90,6 +96,7 @@ export class Example extends React.Component {
           backgroundColor="#FF4081" />
         <button onTouchTap={this.startRecording} type="button">Start</button>
         <button onTouchTap={this.stopRecording} type="button">Stop</button>
+        <button onTouchTap={this.saveRecording} type="button">Save</button>
       </div>
     );
   }
