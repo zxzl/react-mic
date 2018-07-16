@@ -24,7 +24,7 @@ export default class ReactMic extends Component {
   }
 
   componentDidMount() {
-    const { onStop, onStart, audioElem, audioBitsPerSecond, mimeType } = this.props;
+    const { onSave, onStop, onStart, audioElem, audioBitsPerSecond, mimeType } = this.props;
     const { visualizer } = this.refs;
     const canvas = visualizer;
     const canvasCtx = canvas.getContext("2d");
@@ -50,7 +50,7 @@ export default class ReactMic extends Component {
 
       this.setState({
         analyser            : analyser,
-        microphoneRecorder  : new MicrophoneRecorder(onStart, onStop, options),
+        microphoneRecorder  : new MicrophoneRecorder(onSave, onStart, onStop, options),
         canvas              : canvas,
         canvasCtx           : canvasCtx
       }, () => {
@@ -81,7 +81,7 @@ export default class ReactMic extends Component {
   }
 
   render() {
-    const { record, onStop, width, height } = this.props;
+    const { save, record, onSave, onStop, width, height } = this.props;
     const { analyser,  microphoneRecorder, canvasCtx } = this.state;
 
     if(record) {
@@ -90,8 +90,12 @@ export default class ReactMic extends Component {
       }
     } else {
       if (microphoneRecorder) {
-        microphoneRecorder.stopRecording(onStop);
+        microphoneRecorder.stopRecording();
         this.clear();
+
+        if(save) {
+          microphoneRecorder.saveRecording(onSave);
+        }
       }
     }
 
@@ -107,6 +111,7 @@ ReactMic.propTypes = {
   mimeType        : string,
   height          : number,
   record          : bool.isRequired,
+  onSave          : func,
   onStop          : func
 };
 
@@ -117,6 +122,7 @@ ReactMic.defaultProps = {
   audioBitsPerSecond: 128000,
   mimeType          : 'audio/webm;codecs=opus',
   record            : false,
+  save              : false,
   width             : 640,
   height            : 100,
   visualSetting     : 'sinewave'

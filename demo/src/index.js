@@ -2,7 +2,6 @@ import React, {Component}          from 'react';
 import { render }                  from 'react-dom';
 import { FloatingActionButton,
         MuiThemeProvider }         from 'material-ui';
-import injectTapEventPlugin        from 'react-tap-event-plugin';
 import MicrophoneOn                from 'material-ui/svg-icons/av/mic';
 import MicrophoneOff               from 'material-ui/svg-icons/av/stop';
 
@@ -12,8 +11,6 @@ import ReactGA                     from 'react-ga';
 
 require ('./styles.scss');
 
-injectTapEventPlugin();
-
 ReactGA.initialize('UA-98862819-1');
 
 export default class Demo extends Component {
@@ -22,7 +19,8 @@ export default class Demo extends Component {
     this.state = {
       record: false,
       blobObject: null,
-      isRecording: false
+      isRecording: false,
+      save: false
     }
   }
 
@@ -40,7 +38,8 @@ export default class Demo extends Component {
   stopRecording= () => {
     this.setState({
       record: false,
-      isRecording: false
+      isRecording: false,
+      save: true
     });
   }
 
@@ -48,14 +47,15 @@ export default class Demo extends Component {
     console.log('You can tap into the onStart callback');
   }
 
-  onStop= (blobObject) => {
+  onSave= (blobObject) => {
     this.setState({
-      blobURL : blobObject.blobURL
+      blobURL : blobObject.blobURL,
+      save: false
     });
   }
 
   render() {
-    const { isRecording } = this.state;
+    const { isRecording, record, save } = this.state;
 
     return(
       <MuiThemeProvider>
@@ -64,11 +64,12 @@ export default class Demo extends Component {
           <p><a href="https://github.com/hackingbeauty/react-mic">Documentation</a></p>
           <ReactMic
             className="oscilloscope"
-            record={this.state.record}
+            record={record}
+            save={save}
             backgroundColor="#FF4081"
             visualSetting="sinewave"
             audioBitsPerSecond= {128000}
-            onStop={this.onStop}
+            onSave={this.onSave}
             onStart={this.onStart}
             strokeColor="#000000" />
           <div>

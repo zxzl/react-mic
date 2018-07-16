@@ -8,8 +8,8 @@ let startTime;
 let stream;
 let mediaOptions;
 let blobObject;
+let onSaveCallback;
 let onStartCallback;
-let onStopCallback;
 
 const constraints = { audio: true, video: false }; // constraints - only audio needed
 
@@ -19,9 +19,9 @@ navigator.getUserMedia = (navigator.getUserMedia ||
                           navigator.msGetUserMedia);
 
 export class MicrophoneRecorder {
-  constructor(onStart, onStop, options) {
+  constructor(onSave, onStart, onStop, options) {
     onStartCallback= onStart;
-    onStopCallback= onStop;
+    onSaveCallback= onSave;
     mediaOptions= options;
   }
 
@@ -90,7 +90,7 @@ export class MicrophoneRecorder {
     }
   }
 
-  onStop(evt) {
+  saveRecording(evt) {
     const blob = new Blob(chunks, { 'type' : mediaOptions.mimeType });
     chunks = [];
 
@@ -102,7 +102,7 @@ export class MicrophoneRecorder {
       blobURL   : window.URL.createObjectURL(blob)
     }
 
-    if(onStopCallback) { onStopCallback(blobObject) };
+    if(onSaveCallback) { onSaveCallback(blobObject) };
 
   }
 
