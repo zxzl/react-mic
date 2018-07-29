@@ -1,8 +1,10 @@
-const audioCtx = new AudioContext({ sampleRate: 48000 });
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)({
+  sampleRate: 48000
+});
+audioCtx.sampleRate = 48000;
 const analyser = audioCtx.createAnalyser();
 
-const AudioContext  = {
-
+const AudioContext = {
   getAudioContext() {
     return audioCtx;
   },
@@ -16,7 +18,6 @@ const AudioContext  = {
       // use the decoded data here
     });
   }
-
-}
+};
 
 export default AudioContext;
