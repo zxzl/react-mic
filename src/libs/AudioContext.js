@@ -1,7 +1,6 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)({
   sampleRate: 48000
 });
-audioCtx.sampleRate = 48000;
 const analyser = audioCtx.createAnalyser();
 
 const AudioContext = {
